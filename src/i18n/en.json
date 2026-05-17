@@ -1,0 +1,81 @@
+{
+  "nav": {
+    "chat": "Chat",
+    "documents": "Documents",
+    "slides": "Presentations",
+    "dashboard": "Dashboard",
+    "settings": "Settings"
+  },
+  "hero": {
+    "title": "Learn smarter with",
+    "subtitle": "Multi-agent AI assistant for students. Write papers, prepare for tests, find sources.",
+    "cta_primary": "Start for free",
+    "cta_secondary": "Watch demo"
+  },
+  "agents": {
+    "orchestrator": "Router",
+    "tutor": "Tutor",
+    "quiz": "Quiz",
+    "search": "Search",
+    "mentor": "Mentor",
+    "writer": "Writer",
+    "research": "Researcher",
+    "format": "Formatter",
+    "slides": "Slides"
+  },
+  "chat": {
+    "placeholder": "Ask anything...",
+    "new_chat": "New chat",
+    "routing_active": "auto-routing on",
+    "send": "Send"
+  },
+  "documents": {
+    "title": "Documents",
+    "create": "Create document",
+    "empty": "No documents",
+    "empty_sub": "Create your first academic document",
+    "export": "Export DOCX",
+    "word_count": "words",
+    "types": {
+      "реферат": "Essay",
+      "курсовая": "Term paper",
+      "дипломная": "Thesis"
+    }
+  },
+  "pricing": {
+    "title": "Pricing",
+    "subtitle": "Choose the plan that works for you",
+    "monthly": "per month",
+    "free_cta": "Start for free",
+    "paid_cta": "Subscribe",
+    "popular": "Popular",
+    "currency_usd": "USD",
+    "currency_kzt": "KZT"
+  },
+  "dashboard": {
+    "greeting": "Hello",
+    "requests_today": "Requests today",
+    "streak": "Streak",
+    "documents": "Documents",
+    "slides": "Presentations",
+    "recent_docs": "Recent documents",
+    "recent_chats": "Recent chats",
+    "quick_actions": "Quick actions"
+  },
+  "errors": {
+    "rate_limit": "Request limit reached. Upgrade your plan or wait until tomorrow.",
+    "unauthorized": "Please log in",
+    "not_found": "Page not found"
+  },
+  "common": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "open": "Open",
+    "loading": "Loading...",
+    "days_ago": "days ago",
+    "today": "Today",
+    "upgrade": "Upgrade plan"
+  }
+}
