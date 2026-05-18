@@ -31,7 +31,11 @@
       "PowerShell($f = \"C:\\\\Users\\\\9734~1\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\c--Users-------Downloads------------\\\\9ff7c894-44da-42a8-b028-17b8bea4166a\\\\tasks\\\\b763mqb12.output\"; if \\(Test-Path $f\\) { \\(Get-Item $f\\).Length } else { \"not found\" })",
       "PowerShell($f = \"C:\\\\Users\\\\9734~1\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\c--Users-------Downloads------------\\\\9ff7c894-44da-42a8-b028-17b8bea4166a\\\\tasks\\\\biq5nb0s9.output\"; if \\(Test-Path $f\\) { \\(Get-Item $f\\).Length } else { \"not found\" })",
       "PowerShell($f = \"C:\\\\Users\\\\9734~1\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\c--Users-------Downloads------------\\\\9ff7c894-44da-42a8-b028-17b8bea4166a\\\\tasks\\\\biq5nb0s9.output\"; \\(Get-Item $f\\).Length)",
-      "PowerShell($f = \"C:\\\\Users\\\\9734~1\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\c--Users-------Downloads------------\\\\9ff7c894-44da-42a8-b028-17b8bea4166a\\\\tasks\\\\bd7ffgt79.output\"; \\(Get-Item $f\\).Length)"
+      "PowerShell($f = \"C:\\\\Users\\\\9734~1\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\c--Users-------Downloads------------\\\\9ff7c894-44da-42a8-b028-17b8bea4166a\\\\tasks\\\\bd7ffgt79.output\"; \\(Get-Item $f\\).Length)",
+      "Bash(git push *)",
+      "Bash(git add *)",
+      "Bash(git commit -m ' *)",
+      "Bash(git commit *)"
     ],
     "additionalDirectories": [
       "c:\\Users\\�����\\Downloads\\����� �����\\src\\lib",
