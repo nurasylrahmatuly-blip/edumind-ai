@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { auth } from "@/auth";
 
-async function checkAdmin(req: NextRequest) {
+async function checkAdmin(_req: NextRequest) {
   const session = await auth();
   if (!session?.user?.email || session.user.email !== process.env.ADMIN_EMAIL) {
     return false;
