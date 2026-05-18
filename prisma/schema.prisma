@@ -67,6 +67,67 @@ model User {
   presentations     Presentation[]
   knowledgeChunks   KnowledgeChunk[]
   paymentOrders     PaymentOrder[]
+  kaspiPaymentRequests KaspiPaymentRequest[]
+  promoCodesUsed    PromoCode[]
+}
+
+model Ambassador {
+  id               String   @id @default(cuid())
+  name             String
+  email            String   @unique
+  phone            String?
+  telegramUsername String?
+  refCode          String   @unique
+  commission       Int      @default(15)
+  totalReferrals   Int      @default(0)
+  totalRevenue     Int      @default(0)
+  isActive         Boolean  @default(true)
+  createdAt        DateTime @default(now())
+
+  referrals        ReferralVisit[]
+  paymentRequests  KaspiPaymentRequest[]
+}
+
+model ReferralVisit {
+  id           String     @id @default(cuid())
+  ambassadorId String
+  ambassador   Ambassador @relation(fields: [ambassadorId], references: [id])
+  visitorIp    String?
+  converted    Boolean    @default(false)
+  createdAt    DateTime   @default(now())
+}
+
+model PromoCode {
+  id            String    @id @default(cuid())
+  code          String    @unique
+  plan          String
+  months        Int       @default(1)
+  isUsed        Boolean   @default(false)
+  usedByUserId  String?
+  usedBy        User?     @relation(fields: [usedByUserId], references: [id])
+  usedAt        DateTime?
+  createdAt     DateTime  @default(now())
+}
+
+model KaspiPaymentRequest {
+  id             String      @id @default(cuid())
+  userId         String?
+  user           User?       @relation(fields: [userId], references: [id])
+  ambassadorId   String?
+  ambassador     Ambassador? @relation(fields: [ambassadorId], references: [id])
+  refCode        String?
+  plan           String
+  months         Int
+  originalAmount Int
+  discount       Int         @default(0)
+  finalAmount    Int
+  customerName   String?
+  customerPhone  String?
+  status         String      @default("pending")
+  promoCodeId    String?
+  adminNote      String?
+  createdAt      DateTime    @default(now())
+  confirmedAt    DateTime?
 }
 
 model Account {

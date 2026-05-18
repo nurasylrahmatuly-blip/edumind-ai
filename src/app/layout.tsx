@@ -6,6 +6,7 @@ import { auth } from "@/auth";
 import { NextIntlClientProvider } from "next-intl";
 import { getLocale, getMessages } from "next-intl/server";
 import { ToastProvider } from "@/components/ui/Toast";
+import { ReferralProvider } from "@/components/referral/ReferralProvider";
 
 const inter = Inter({ subsets: ["latin", "cyrillic"] });
 
@@ -60,7 +61,11 @@ export default async function RootLayout({
       <body className={inter.className}>
         <NextIntlClientProvider messages={messages}>
           <ToastProvider>
-            <SessionProvider session={session}>{children}</SessionProvider>
+            <SessionProvider session={session}>
+              <ReferralProvider>
+                {children}
+              </ReferralProvider>
+            </SessionProvider>
           </ToastProvider>
         </NextIntlClientProvider>
       </body>

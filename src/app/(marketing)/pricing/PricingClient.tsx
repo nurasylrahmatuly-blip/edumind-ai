@@ -1,22 +1,18 @@
 'use client';
 
-import { useState } from "react";
 import Link from "next/link";
 import { Check, Zap, CreditCard } from "lucide-react";
 
-type Currency = "usd" | "kzt";
-
 const faq = [
-  { q: "Можно отменить в любой момент?", a: "Да. После отмены доступ остаётся до конца оплаченного периода." },
-  { q: "Есть студенческие скидки?", a: "Да! Напишите на support@edumind.ai с university email для скидки 20%." },
-  { q: "Насколько уникальны работы?", a: "Каждая работа генерируется индивидуально. Academic+ включает проверку уникальности." },
+  { q: "Как происходит оплата?", a: "Переводите сумму на Kaspi номер или карту, отправляете скриншот в WhatsApp — мы активируем в течение 1-2 часов." },
+  { q: "Можно отменить в любой момент?", a: "Да. Оплата помесячная, достаточно просто не продлевать." },
+  { q: "Есть студенческие скидки?", a: "Да! Получите реф-ссылку от амбассадора EduMind и получите −15% на любой тариф." },
   { q: "На каких языках работает?", a: "Русский, казахский — основные. Базовая поддержка английского." },
 ];
 
-interface Plan {
+interface PlanDef {
   key: "free" | "pro" | "academic";
   name: string;
-  usd: number;
   kzt: number;
   period: string;
   badge: string | null;
@@ -25,11 +21,11 @@ interface Plan {
   missing: string[];
 }
 
-const plans: Plan[] = [
+const plans: PlanDef[] = [
   {
     key: "free",
     name: "Free",
-    usd: 0, kzt: 0,
+    kzt: 0,
     period: "навсегда",
     badge: null,
     featured: false,
@@ -39,7 +35,7 @@ const plans: Plan[] = [
   {
     key: "pro",
     name: "Student Pro",
-    usd: 14, kzt: 4990,
+    kzt: 4990,
     period: "в месяц",
     badge: "Популярный",
     featured: true,
@@ -49,7 +45,7 @@ const plans: Plan[] = [
   {
     key: "academic",
     name: "Academic+",
-    usd: 29, kzt: 9990,
+    kzt: 9990,
     period: "в месяц",
     badge: "Максимум",
     featured: false,
@@ -59,39 +55,6 @@ const plans: Plan[] = [
 ];
 
 export function PricingClient() {
-  const [currency, setCurrency] = useState<Currency>("usd");
-  const [loading, setLoading] = useState<string | null>(null);
-
-  async function handleStripe(plan: "pro" | "academic") {
-    setLoading(`stripe-${plan}`);
-    try {
-      const res = await fetch("/api/stripe/create-checkout", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ plan, currency }),
-      });
-      const data = await res.json();
-      if (data.url) window.location.href = data.url;
-    } finally {
-      setLoading(null);
-    }
-  }
-
-  async function handlePayBox(plan: "pro" | "academic") {
-    setLoading(`paybox-${plan}`);
-    try {
-      const res = await fetch("/api/paybox/create-payment", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ plan }),
-      });
-      const data = await res.json();
-      if (data.paymentUrl) window.location.href = data.paymentUrl;
-    } finally {
-      setLoading(null);
-    }
-  }
-
   return (
     <div style={{ minHeight: "100vh", background: "var(--bg-void)", padding: "60px 24px" }}>
       <div style={{ maxWidth: 1080, margin: "0 auto" }}>
@@ -104,32 +67,18 @@ export function PricingClient() {
           <h1 style={{ fontFamily: "var(--font-display)", fontSize: 48, fontWeight: 800, color: "var(--white)", letterSpacing: "-0.02em", marginBottom: 14 }}>
             Инвестиция в твои <span style={{ color: "var(--lime)" }}>оценки</span>
           </h1>
-          <p style={{ fontFamily: "var(--font-ui)", fontSize: 17, color: "var(--white-dim)", marginBottom: 28 }}>
+          <p style={{ fontFamily: "var(--font-ui)", fontSize: 17, color: "var(--white-dim)", marginBottom: 14 }}>
             Начни бесплатно. Переходи на Pro когда нужно больше.
           </p>
-
-          {/* Currency toggle */}
-          <div style={{ display: "inline-flex", background: "var(--bg-raised)", border: "1px solid var(--border-dim)", borderRadius: "var(--radius-pill)", padding: 4, gap: 4 }}>
-            {(["usd", "kzt"] as Currency[]).map((c) => (
-              <button
-                key={c}
-                onClick={() => setCurrency(c)}
-                style={{
-                  padding: "6px 20px",
-                  borderRadius: "var(--radius-pill)",
-                  border: "none",
-                  cursor: "pointer",
-                  fontFamily: "var(--font-mono)",
-                  fontSize: 12,
-                  fontWeight: 600,
-                  background: currency === c ? "var(--lime)" : "transparent",
-                  color: currency === c ? "#070809" : "var(--white-muted)",
-                  transition: "all 0.15s",
-                }}
-              >
-                {c === "usd" ? "$ USD" : "₸ KZT"}
-              </button>
-            ))}
+          <div style={{
+            display: "inline-flex", alignItems: "center", gap: 8,
+            background: "rgba(184,247,39,0.08)", border: "1px solid rgba(184,247,39,0.25)",
+            borderRadius: 24, padding: "8px 18px",
+          }}>
+            <CreditCard size={14} style={{ color: "#b8f727" }} />
+            <span style={{ fontFamily: "var(--font-mono)", fontSize: 12, color: "#b8f727" }}>
+              💳 Принимаем оплату через Kaspi · Активация в течение 1-2 часов
+            </span>
           </div>
         </div>
 
@@ -152,21 +101,10 @@ export function PricingClient() {
                   {plan.name}
                 </h2>
                 <div style={{ display: "flex", alignItems: "baseline", gap: 6 }}>
-                  {currency === "usd" ? (
-                    <>
-                      <span className="price-number" style={{ fontSize: 44 }}>
-                        ${plan.usd}
-                      </span>
-                      {plan.usd > 0 && <span className="price-period">/ {plan.period}</span>}
-                    </>
-                  ) : (
-                    <>
-                      <span className="price-number" style={{ fontSize: 44 }}>
-                        {plan.kzt.toLocaleString("ru-RU")}₸
-                      </span>
-                      {plan.kzt > 0 && <span className="price-period">/ {plan.period}</span>}
-                    </>
-                  )}
+                  <span className="price-number" style={{ fontSize: 44 }}>
+                    {plan.kzt === 0 ? "0" : plan.kzt.toLocaleString("ru-RU")}₸
+                  </span>
+                  {plan.kzt > 0 && <span className="price-period">/ {plan.period}</span>}
                 </div>
               </div>
 
@@ -177,25 +115,14 @@ export function PricingClient() {
                     Начать бесплатно
                   </Link>
                 ) : (
-                  <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-                    <button
-                      className={plan.featured ? "btn-primary" : "btn-outline"}
-                      style={{ width: "100%", justifyContent: "center" }}
-                      onClick={() => handleStripe(plan.key as "pro" | "academic")}
-                      disabled={loading === `stripe-${plan.key}`}
-                    >
-                      <CreditCard size={14} />
-                      {loading === `stripe-${plan.key}` ? "Загрузка…" : "Оплатить картой (Stripe)"}
-                    </button>
-                    <button
-                      className="btn-ghost"
-                      style={{ width: "100%", justifyContent: "center", border: "1px solid var(--border-soft)" }}
-                      onClick={() => handlePayBox(plan.key as "pro" | "academic")}
-                      disabled={loading === `paybox-${plan.key}`}
-                    >
-                      {loading === `paybox-${plan.key}` ? "Загрузка…" : "Kaspi / Halyk (PayBox)"}
-                    </button>
-                  </div>
+                  <Link
+                    href={`/upgrade?plan=${plan.key}`}
+                    className={plan.featured ? "btn-primary" : "btn-outline"}
+                    style={{ width: "100%", justifyContent: "center", display: "flex", alignItems: "center", gap: 6 }}
+                  >
+                    <CreditCard size={14} />
+                    Оплатить через Kaspi →
+                  </Link>
                 )}
               </div>
 
@@ -216,6 +143,20 @@ export function PricingClient() {
               </ul>
             </div>
           ))}
+        </div>
+
+        {/* Kaspi payment info banner */}
+        <div style={{
+          textAlign: "center", marginBottom: 48,
+          background: "rgba(184,247,39,0.04)", border: "1px solid rgba(184,247,39,0.15)",
+          borderRadius: 16, padding: "24px",
+        }}>
+          <p style={{ fontFamily: "var(--font-display)", fontSize: 16, fontWeight: 700, color: "var(--white)", marginBottom: 6 }}>
+            💳 Как оплатить?
+          </p>
+          <p style={{ fontFamily: "var(--font-ui)", fontSize: 14, color: "var(--white-dim)" }}>
+            Перевод на Kaspi → отправь скриншот в WhatsApp → получи доступ в течение 1-2 часов
+          </p>
         </div>
 
         {/* FAQ */}

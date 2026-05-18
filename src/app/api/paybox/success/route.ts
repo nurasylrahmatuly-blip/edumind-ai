@@ -1,5 +1,5 @@
-import { redirect } from 'next/navigation';
+import { NextResponse } from "next/server";
 
 export async function GET() {
-  redirect('/dashboard?upgraded=true');
+  return NextResponse.json({ error: "disabled" }, { status: 410 });
 }

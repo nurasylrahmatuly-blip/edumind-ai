@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { User, CreditCard, Key, Bell, ExternalLink, CheckCircle, Clock } from "lucide-react";
+import { User, CreditCard, Key, Bell, ExternalLink, CheckCircle, Clock, Gift, Sparkles } from "lucide-react";
 
 interface PaymentOrder {
   id: string;
@@ -56,6 +56,35 @@ export function SettingsClient({ user, usageToday, paymentOrders }: Props) {
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
   const [portalLoading, setPortalLoading] = useState(false);
+  const [promoCode, setPromoCode] = useState("");
+  const [promoLoading, setPromoLoading] = useState(false);
+  const [promoResult, setPromoResult] = useState<{ success: boolean; message: string; expiresAt?: string } | null>(null);
+
+  async function handlePromoActivate() {
+    if (!promoCode.trim()) return;
+    setPromoLoading(true);
+    setPromoResult(null);
+    try {
+      const res = await fetch("/api/admin/promo/activate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ code: promoCode.trim().toUpperCase() }),
+      });
+      const data = await res.json();
+      if (data.success) {
+        const exp = new Date(data.expiresAt).toLocaleDateString("ru-RU");
+        setPromoResult({ success: true, message: `Ваш план активирован до ${exp}! 🎉` });
+        setPromoCode("");
+        setTimeout(() => window.location.reload(), 2000);
+      } else {
+        setPromoResult({ success: false, message: data.error ?? "Неверный промокод" });
+      }
+    } catch {
+      setPromoResult({ success: false, message: "Ошибка сети, попробуйте снова" });
+    } finally {
+      setPromoLoading(false);
+    }
+  }
 
   const planLower = user.plan.toLowerCase() as "free" | "pro" | "academic";
   const dailyLimit = planLower === "free" ? 50 : -1;
@@ -217,6 +246,54 @@ export function SettingsClient({ user, usageToday, paymentOrders }: Props) {
             {user.plan === "FREE" && (
               <div style={{ marginTop: 16 }}>
                 <Link href="/pricing" className="btn-primary btn-sm">Обновить план</Link>
+              </div>
+            )}
+          </div>
+
+          {/* Promo code activation */}
+          <div className="card-base" style={{ padding: "24px" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 14 }}>
+              <Gift size={16} style={{ color: "var(--lime)" }} />
+              <h3 style={{ fontFamily: "var(--font-display)", fontSize: 15, fontWeight: 700, color: "var(--white)" }}>
+                Активировать план
+              </h3>
+            </div>
+            <p style={{ fontFamily: "var(--font-ui)", fontSize: 13, color: "var(--white-dim)", marginBottom: 14 }}>
+              Введите промокод полученный от EduMind
+            </p>
+            <div style={{ display: "flex", gap: 8 }}>
+              <input
+                value={promoCode}
+                onChange={(e) => setPromoCode(e.target.value.toUpperCase())}
+                onKeyDown={(e) => { if (e.key === "Enter") handlePromoActivate(); }}
+                placeholder="EDUPRO-001"
+                style={{
+                  flex: 1, padding: "10px 14px",
+                  background: "var(--bg-hover)", border: "1px solid var(--border-soft)",
+                  borderRadius: "var(--radius-md)", color: "var(--white)",
+                  fontFamily: "var(--font-mono)", fontSize: 13, outline: "none",
+                }}
+              />
+              <button
+                className="btn-primary btn-sm"
+                onClick={handlePromoActivate}
+                disabled={promoLoading || !promoCode.trim()}
+              >
+                {promoLoading ? "…" : <><Sparkles size={13} /> Активировать</>}
+              </button>
+            </div>
+            {promoResult && (
+              <div style={{
+                marginTop: 10, padding: "10px 14px", borderRadius: "var(--radius-md)",
+                background: promoResult.success ? "rgba(184,247,39,0.08)" : "rgba(239,68,68,0.08)",
+                border: `1px solid ${promoResult.success ? "rgba(184,247,39,0.3)" : "rgba(239,68,68,0.3)"}`,
+              }}>
+                <p style={{
+                  fontFamily: "var(--font-ui)", fontSize: 13,
+                  color: promoResult.success ? "var(--lime-text)" : "#ef4444", margin: 0,
+                }}>
+                  {promoResult.message}
+                </p>
               </div>
             )}
           </div>
