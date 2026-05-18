@@ -10,12 +10,12 @@ async function checkAdmin(_req: NextRequest) {
   return true;
 }
 
-export async function GET(req: NextRequest) {
-  if (!(await checkAdmin(req))) {
+export async function GET(_req: NextRequest) {
+  if (!(await checkAdmin(_req))) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const status = req.nextUrl.searchParams.get("status");
+  const status = _req.nextUrl.searchParams.get("status");
 
   const requests = await prisma.kaspiPaymentRequest.findMany({
     where: status ? { status } : undefined,

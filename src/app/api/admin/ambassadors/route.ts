@@ -7,8 +7,8 @@ async function checkAdmin(_req: NextRequest) {
   return session?.user?.email === process.env.ADMIN_EMAIL;
 }
 
-export async function GET(req: NextRequest) {
-  if (!(await checkAdmin(req))) {
+export async function GET(_req: NextRequest) {
+  if (!(await checkAdmin(_req))) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 

@@ -7,13 +7,13 @@ async function checkAdmin(_req: NextRequest) {
   return session?.user?.email === process.env.ADMIN_EMAIL;
 }
 
-export async function GET(req: NextRequest) {
-  if (!(await checkAdmin(req))) {
+export async function GET(_req: NextRequest) {
+  if (!(await checkAdmin(_req))) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const plan = req.nextUrl.searchParams.get("plan");
-  const status = req.nextUrl.searchParams.get("status");
+  const plan = _req.nextUrl.searchParams.get("plan");
+  const status = _req.nextUrl.searchParams.get("status");
 
   const codes = await prisma.promoCode.findMany({
     where: {
