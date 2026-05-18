@@ -6,6 +6,7 @@ const withNextIntl = createNextIntlPlugin('./src/i18n/request.ts');
 const nextConfig = {
   experimental: {
     optimizePackageImports: ['@anthropic-ai/sdk', 'docx', 'pptxgenjs'],
+    serverComponentsExternalPackages: ['@prisma/client', 'bcrypt'],
   },
   images: {
     domains: ['lh3.googleusercontent.com', 'avatars.githubusercontent.com'],

@@ -1,45 +1,7 @@
-import NextAuth from "next-auth";
-import { authConfig } from "@/auth.config";
-import { NextResponse } from "next/server";
+import { auth } from "@/auth"
 
-const { auth } = NextAuth(authConfig);
-
-export default auth((req) => {
-  const isLoggedIn = !!req.auth?.user;
-  const { pathname } = req.nextUrl;
-
-  const isProtected =
-    pathname.startsWith("/dashboard") ||
-    pathname.startsWith("/chat") ||
-    pathname.startsWith("/documents") ||
-    pathname.startsWith("/slides") ||
-    pathname.startsWith("/knowledge");
-
-  if (isProtected && !isLoggedIn) {
-    const loginUrl = new URL("/login", req.url);
-    loginUrl.searchParams.set("callbackUrl", pathname);
-    return NextResponse.redirect(loginUrl);
-  }
-
-  if ((pathname === "/login" || pathname === "/register") && isLoggedIn) {
-    return NextResponse.redirect(new URL("/dashboard", req.url));
-  }
-
-  return NextResponse.next();
-});
+export default auth
 
 export const config = {
-  matcher: [
-    "/dashboard/:path*",
-    "/chat/:path*",
-    "/chat",
-    "/documents/:path*",
-    "/documents",
-    "/slides/:path*",
-    "/slides",
-    "/knowledge/:path*",
-    "/knowledge",
-    "/login",
-    "/register",
-  ],
-};
+  matcher: ["/((?!api|_next/static|_next/image|favicon.ico).*)"],
+}
