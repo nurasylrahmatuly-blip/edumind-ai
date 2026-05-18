@@ -27,7 +27,7 @@ export async function GET(_req: NextRequest) {
   return NextResponse.json({ codes });
 }
 
-export async function POST(req: NextRequest) {
+export async function POST(_req: NextRequest) {
   if (!(await checkAdmin(req))) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }

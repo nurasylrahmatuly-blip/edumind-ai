@@ -29,7 +29,7 @@ export async function GET(_req: NextRequest) {
   return NextResponse.json({ requests });
 }
 
-export async function PATCH(req: NextRequest) {
+export async function PATCH(_req: NextRequest) {
   if (!(await checkAdmin(req))) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }

@@ -22,7 +22,7 @@ export async function GET(_req: NextRequest) {
   return NextResponse.json({ ambassadors });
 }
 
-export async function POST(req: NextRequest) {
+export async function POST(_req: NextRequest) {
   if (!(await checkAdmin(req))) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
@@ -51,7 +51,7 @@ export async function POST(req: NextRequest) {
   return NextResponse.json({ ambassador });
 }
 
-export async function PATCH(req: NextRequest) {
+export async function PATCH(_req: NextRequest) {
   if (!(await checkAdmin(req))) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
@@ -65,7 +65,7 @@ export async function PATCH(req: NextRequest) {
   return NextResponse.json({ ambassador: updated });
 }
 
-export async function DELETE(req: NextRequest) {
+export async function DELETE(_req: NextRequest) {
   if (!(await checkAdmin(req))) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
