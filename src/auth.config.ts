@@ -15,9 +15,4 @@ export const authConfig = {
     verifyRequest: "/login?verify=1",
     error: "/login?error=1",
   },
-  callbacks: {
-    authorized({ auth }) {
-      return !!auth;
-    },
-  },
 } satisfies NextAuthConfig;
