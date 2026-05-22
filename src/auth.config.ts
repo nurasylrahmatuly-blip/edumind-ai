@@ -4,6 +4,7 @@ import Google from "next-auth/providers/google";
 // Edge-compatible config — no PrismaAdapter, no Nodemailer, no DB calls.
 // Used only by middleware (which runs on Edge runtime).
 export const authConfig = {
+  trustHost: true,
   providers: [
     Google({
       clientId: process.env.GOOGLE_CLIENT_ID!,
