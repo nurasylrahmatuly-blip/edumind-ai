@@ -35,7 +35,8 @@
       "Bash(git push *)",
       "Bash(git add *)",
       "Bash(git commit -m ' *)",
-      "Bash(git commit *)"
+      "Bash(git commit *)",
+      "Bash(Test-Path \"c:\\\\Users\\\\админ\\\\Downloads\\\\Новая папка\\\\src\\\\auth.config.ts\")"
     ],
     "additionalDirectories": [
       "c:\\Users\\�����\\Downloads\\����� �����\\src\\lib",
